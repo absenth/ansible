@@ -1,0 +1,85 @@
+- hosts: localhost
+  become: yes
+  tasks: 
+    - name: Setup VSCode yum repo
+      yum_repository:
+        name: VSCode
+        description: Microsoft repo for Visual Studio Code
+        baseurl: https://packages.microsoft.com/yumrepos/vscode
+        enabled: yes
+        gpgcheck: no
+
+    - name: Setup epel
+      dnf: 
+        name: 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
+        state: present
+
+    - name: Enable Code-Ready-Builder
+      command: subscription-manager repos --enable "codeready-builder-for-rhel-8-x86_64-rpms"
+
+    - name: Setup VSCode GPG Key
+      command: rpm --import https://packages.microsoft.com/keys/microsoft.asc
+
+    - name: Update dnf package manage repositories cache
+      dnf:
+        name: '*'
+        state: latest
+
+    - name: Install packages
+      package:
+        name:
+          - tmux
+          - vim
+          - git
+          - zsh
+          - gnome-tweaks
+          - fontawesome-fonts
+          - code
+          - cargo
+          - snapd
+          - snapd-selinux
+          - flatpak
+        state: present
+
+    - name: Enable Snapd in systemd
+      systemd:
+        state: started
+        name: snapd
+
+    - name: Add the flathub flatpak repository remote to the user installation
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        method: user
+
+    - name: Remove shotwell, rhythmbox
+      package:
+        name: 
+          - shotwell
+          - rhythmbox
+        state: absent
+
+    - name: Flatpak install discord
+      community.general.flatpak:
+        name: discord 
+        state: present
+    
+    - name: Flatpack install pycharm-community
+      community.general.flatpak:
+        name: pycharm-community
+        state: present
+        
+    - name: Install Spotify
+      snap:
+        name:
+          - spotify
+        state: present
+
+    - name: Add user Lars
+      user:
+        name: lars
+        comment: Lars Noldan
+        groups: wheel
+        shell: /usr/bin/bash
+        state: present
