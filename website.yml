@@ -1,0 +1,10 @@
+--- 
+- name: Install Wordpress, MySQL, Apache, and PHP 7.4
+  hosts: centos
+  remote_user: ansible
+
+  roles:
+    - common
+    - lamp
+    - mysql
+    - wordpress

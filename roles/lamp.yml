@@ -1,0 +1,26 @@
+---
+- hosts: development
+  name: intsall apache & php
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Install Php
+      yum:
+        name: php74
+        state: latest
+
+    - name: Install php-mysql
+      yum:
+        name: php74-php-mysqlnd
+        state: latest
+
+  handlers:
+    - name: start httpd service
+      service: 
+        name: httpd
+        state: restarted

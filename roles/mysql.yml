@@ -1,0 +1,10 @@
+---
+- name: install mysql server
+  hosts: development
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Install MySQL
+      yum:
+        name: mariadb
+        state: latest

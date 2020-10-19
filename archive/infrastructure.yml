@@ -1,0 +1,52 @@
+--- # Infrastructure Demo YAML
+- hosts: all
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Install Packages common to all systems
+      package:
+        name: 
+          - tmux
+          - vim
+          - zsh
+          - git
+          - curl
+          - wget
+        state: latest
+
+- hosts: centos
+  remote_user: ansible
+  become: yes
+  gather_facts: yes
+  vars:
+    username: mc
+  tasks:
+    - name: Install httpd service on all instances that belong to redhat group
+      dnf:
+        name: httpd
+        state: latest
+      notify: 
+        - start httpd service
+  handlers:
+    - name: start httpd service
+      service: 
+        name: httpd
+        state: restarted
+
+- hosts: ubuntu
+  remote_user: ansible
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Install NginX on ubuntu hosts
+      apt:
+        name: nginx
+        state: latest
+      notify: 
+        - restart nginx service
+  handlers:
+    - name: restart nginx service
+      service:
+        name: nginx
+        enabled: yes
+        state: restarted  

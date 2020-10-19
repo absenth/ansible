@@ -1,0 +1,32 @@
+---
+  
+- name: setup php 7.4 on Centos 7
+  hosts: development
+  become: true
+  tasks:
+    - name: setup epel 1
+      yum:
+        name: 
+          - 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
+        state: present
+    - name: setup epel 2
+      yum:
+        name:
+          - 'https://rpms.remirepo.net/enterprise/remi-release-7.rpm'
+        state: present
+    - name: Enable remi-php74 repo
+      command: 'yum-config-manager --enable remi-php-74'
+    - name: Open Port 80 in iptables.
+      iptables:
+        chain: INPUT  
+        protocol: tcp
+        destination_port: '80'
+        jump: ACCEPT
+        comment: Allow Apache to work.
+    - name: Open Port 443 in iptables.
+      iptables:
+        chain: INPUT  
+        protocol: tcp
+        destination_port: '443'
+        jump: ACCEPT
+        comment: Allow Apache to work.

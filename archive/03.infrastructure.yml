@@ -1,0 +1,11 @@
+--- # Infrastructure demo Yaml -- testing mysql_variables
+- hosts: '{{ var_hosts }}'
+  remote_user: '{{ var_user }}'
+  become: yes
+  gather_facts: yes
+  tasks: 
+    - name: Install package define by vars section
+      dnf:
+        name: '{{ var_pkg }}'
+        state: latest
+        
