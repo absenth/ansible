@@ -1,0 +1,15 @@
+---
+
+  - name: Install Docker
+    become: true
+    pacman:
+      name:
+        - docker
+        - docker-compose
+      state: latest
+
+  - name: Add Docker to Systemd
+    systemd:
+      enabled: yes
+      state: started
+      name: docker

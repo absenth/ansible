@@ -1,0 +1,10 @@
+---
+
+- name: setup default users
+  become: true
+  user:
+    name: lars
+    comment: Lars Noldan
+    groups: wheel,docker
+    generate_ssh_key: yes
+    ssh_key_type: ed25519

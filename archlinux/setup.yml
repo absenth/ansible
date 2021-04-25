@@ -1,0 +1,9 @@
+---
+- name: Configure Archlinux Workstations
+  hosts: archlinux
+  remote_user: ansible
+
+  roles:
+    - packages
+    - docker
+    - users
