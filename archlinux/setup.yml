@@ -5,7 +5,7 @@
   remote_user: ansible
 
   roles:
-    #- packages
-    #- docker
-    #- users
+    - packages
+    - docker
+    - users
     - xorg
