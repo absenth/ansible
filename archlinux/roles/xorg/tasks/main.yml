@@ -1,24 +1,19 @@
 ---
 
 - name: Install Intel Graphics Drivers
-  become: true
   pacman:
     name:
       - xf86-video-intel
       - mesa
-      - lib32-mesa
-  when: model in ["T460s", "X260"]
+        #when: model in ["T460s", "X260"]
 
 - name: Install nvidia Graphics Drivers
-  become: true
   pacman:
     name:
       - xf86-video-nouveau
       - mesa
-      - lib32-mesa
 
 - name: Install Xorg base
-  become: true
   pacman:
     name:
       - xorg-server
@@ -26,7 +21,6 @@
       - xorg-xrdb
 
 - name: Install optional xorg tools
-  become: true
   pacman:
     name:
       - xorg-xmodmap
@@ -34,17 +28,32 @@
       - xorg-xev
       - xorg-xset
       - xorg-xinput
-  when: not minimal
-
-- name: Caps --> Ctrl in Xorg
-  become: true
-  copy: src=files/xorg-no-caps dest=/etc/X11/xorg.conf.d/00-keyboard.conf mode=644
+        #when: not minimal
 
 - name: Set up Xorg for ThinkPad
-  become: true
   pacman:
     name:
       - xf86-input-synaptics
-  when: model in ["T460s", "X260"]
+        #when: model in ["T460s", "X260"]
 
 
+- name: Install LightDM
+  pacman:
+    name:
+      - lightdm
+      - lightdm-gtk-greeter
+      - lightdm-webkit2-greeter
+
+- name: Configure LightDM
+  become: true
+  copy: src=files/lightdm.conf dest=/etc/lightdm/lightdm.conf
+
+- name: Enable LightDM in Systemd
+  systemd:
+    enabled: no
+    name: lightdm
+
+- name: Start LightDM in Systemd
+  systemd:
+    state: stopped
+    name: lightdm

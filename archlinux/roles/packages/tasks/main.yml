@@ -1,13 +1,11 @@
 ---
 
 - name: Update Pacman and Packages
-  become: true
   pacman:
     update_cache: yes
     upgrade: yes
 
 - name: Install packages
-  become: true
   pacman:
     name:
       - chromium
@@ -27,14 +25,12 @@
 
 
 - name: Install xfce4
-  become: true
   pacman:
     name:
       - xfce4
       - xfce4-goodies
 
 - name: Install i3-wm
-  become: true
   pacman:
     name:
       - i3-gaps

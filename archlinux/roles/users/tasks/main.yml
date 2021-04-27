@@ -1,7 +1,6 @@
 ---
 
 - name: setup default users
-  become: true
   user:
     name: lars
     comment: Lars Noldan
