@@ -9,6 +9,7 @@
       state: latest
 
   - name: Add Docker to Systemd
+    become: true
     systemd:
       enabled: yes
       state: started

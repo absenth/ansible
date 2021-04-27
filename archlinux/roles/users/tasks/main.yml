@@ -6,5 +6,6 @@
     name: lars
     comment: Lars Noldan
     groups: wheel,docker
+    shell: /usr/bin/zsh
     generate_ssh_key: yes
     ssh_key_type: ed25519

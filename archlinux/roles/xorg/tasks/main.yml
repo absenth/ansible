@@ -1,0 +1,50 @@
+---
+
+- name: Install Intel Graphics Drivers
+  become: true
+  pacman:
+    name:
+      - xf86-video-intel
+      - mesa
+      - lib32-mesa
+  when: model in ["T460s", "X260"]
+
+- name: Install nvidia Graphics Drivers
+  become: true
+  pacman:
+    name:
+      - xf86-video-nouveau
+      - mesa
+      - lib32-mesa
+
+- name: Install Xorg base
+  become: true
+  pacman:
+    name:
+      - xorg-server
+      - xorg-xinit
+      - xorg-xrdb
+
+- name: Install optional xorg tools
+  become: true
+  pacman:
+    name:
+      - xorg-xmodmap
+      - xorg-xrandr
+      - xorg-xev
+      - xorg-xset
+      - xorg-xinput
+  when: not minimal
+
+- name: Caps --> Ctrl in Xorg
+  become: true
+  copy: src=files/xorg-no-caps dest=/etc/X11/xorg.conf.d/00-keyboard.conf mode=644
+
+- name: Set up Xorg for ThinkPad
+  become: true
+  pacman:
+    name:
+      - xf86-input-synaptics
+  when: model in ["T460s", "X260"]
+
+
